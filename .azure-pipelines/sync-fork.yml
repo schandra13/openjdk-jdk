@@ -44,10 +44,21 @@ stages:
           fork_repo_url = ${{ parameters.fork_repo_url }}
           #repourl="https://github.com/microsoft/openjdk-jdk.git"
           repourl="${fork_repo_url#https://github.com/shcandra13/}"
+
           repoName="${repourl%.git}"
-          echo "reponame is : $repoName "
+          echo "reponame is : $repoName"
           echo "##vso[task.setvariable variable=FORK_FOLDER]$repoName"
-        displayName: "Fetch fork repo folder name"  
+        displayName: "Fetch fork repo folder name" 
+
+      # - bash: |
+      #     echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
+      #     repourl="https://github.com/microsoft/openjdk-jdk.git"
+      #      https://github.com/schandra13/openjdk-jdk 
+      #     repourl="${repourl#https://github.com/microsoft/}"
+      #     repourl="${repourl%.git}"
+      #     echo "repourl is : $repourl "
+      #     echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
+      #   displayName: "Fetch fork repo  folder name " 
 
       - bash: |
           git clone ${{ parameters.fork_repo_url }}
