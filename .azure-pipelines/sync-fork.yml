@@ -2,8 +2,6 @@ parameters:
   - name: fork_repo_url
     displayName: fork_repo_url
     default: https://github.com/microsoft/openjdk-jdk.git
-   # https://github.com/microsoft/openjdk-jdk11u.git
-   # https://github.com/microsoft/openjdk-jdk17u.git
   - name: upstream_repo_url
     displayName: upstream_repo_url
     default: https://github.com/openjdk/jdk.git
@@ -33,7 +31,6 @@ stages:
     pool:
       name: JEG-ubuntu20.04-x64-EO
     steps:
-    
       - bash: |
           git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
           git config --global core.autocrlf input
@@ -43,21 +40,21 @@ stages:
 
       - bash: |
           echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
-          repourl="https://github.com/microsoft/openjdk-jdk.git"
-          repourl="${repourl#https://github.com/microsoft/}"
-          repourl="${repourl%.git}"
-          echo "repourl is : $repourl "
-          echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
-        displayName: "Fetch fork repo  folder name "  
+          #repourl="https://github.com/microsoft/openjdk-jdk.git"
+          repourl="${fork_repo_url#https://github.com/microsoft/}"
+          repoName="${repourl%.git}"
+          echo "reponame is : $repoName "
+          echo "##vso[task.setvariable variable=FORK_FOLDER]$repoName"
+        displayName: "Fetch fork repo folder name"  
 
       - bash: |
           git clone ${{ parameters.fork_repo_url }}
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
-          git checkout ${{ parameters.fork_branch }} # our main branch
+          git checkout ${{ parameters.fork_branch }} 
           git remote add upstream ${{ parameters.upstream_repo_url }}
           git fetch upstream
-          git merge --ff-only upstream/${{ parameters.upstream_branch }} # into our main branch.            
+          git merge --ff-only upstream/${{ parameters.upstream_branch }} 
           git push https://schandra13:$PASSKEY@github.com/schandra13/openjdk-jdk.git 
         env:
           PASSKEY: $(passkey)
