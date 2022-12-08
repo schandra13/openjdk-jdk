@@ -32,18 +32,18 @@ stages:
       name: JEG-ubuntu20.04-x64-EO
     
     steps:
-      # - bash: |
-      #     git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
-      #     git config --global core.autocrlf input
-      #     git config --global user.email "javaplatinfra@microsoft.com"
-      #     git config --global user.name "JEG- $(Build.DefinitionName)"
-      #   displayName: "git config"
+      - bash: |
+          git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
+          git config --global core.autocrlf input
+          git config --global user.email "javaplatinfra@microsoft.com"
+          git config --global user.name "JEG- $(Build.DefinitionName)"
+        displayName: "git config"
 
       - bash: |
           echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
           fork_repo_url = ${{ parameters.fork_repo_url }}
           #repourl="https://github.com/microsoft/openjdk-jdk.git"
-          repourl="${fork_repo_url#https://github.com/shcandra13/}"
+          repourl="${fork_repo_url#https://github.com/schandra13/}"
 
           repoName="${repourl%.git}"
           echo "reponame is : $repoName"
