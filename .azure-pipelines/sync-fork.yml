@@ -1,0 +1,66 @@
+parameters:
+  - name: fork_repo_url
+    displayName: fork_repo_url
+    default: https://github.com/microsoft/openjdk-jdk.git
+   # https://github.com/microsoft/openjdk-jdk11u.git
+   # https://github.com/microsoft/openjdk-jdk17u.git
+  - name: upstream_repo_url
+    displayName: upstream_repo_url
+    default: https://github.com/openjdk/jdk.git
+  - name: fork_branch
+    default: main
+    displayName: fork_branch
+  - name: upstream_branch
+    default: master 
+    displayName: upstream_branch
+
+trigger: none
+
+schedules:
+  # At 5am UTC (10pm PST) daily
+  - cron: "0 5 * * *"
+    displayName: Sync
+    always: false # only run if there has been code changes to the jdk codebase
+    branches:
+      include:
+        - "*"
+stages:
+- stage: sync
+  jobs:
+  - job: sync
+    displayName: "sync repository with upstream"
+
+    pool:
+      name: JEG-ubuntu20.04-x64-EO
+    steps:
+      - checkout: none
+
+      - bash: |
+          git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
+          git config --global core.autocrlf input
+          git config --global user.email "javaplatinfra@microsoft.com"
+          git config --global user.name "JEG- $(Build.DefinitionName)"
+        displayName: "git config"
+
+      - bash: |
+          echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
+          repourl="https://github.com/microsoft/openjdk-jdk.git"
+          repourl="${repourl#https://github.com/microsoft/}"
+          repourl="${repourl%.git}"
+          echo "repourl is : $repourl "
+          echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
+        displayName: "Fetch fork repo  folder name "  
+
+      - bash: |
+          git clone ${{ parameters.fork_repo_url }}
+          echo "Fork_Folder is : $(FORK_FOLDER)"
+          cd $(FORK_FOLDER)
+          git checkout ${{ parameters.fork_branch }} # our main branch
+          git remote add upstream ${{ parameters.upstream_repo_url }}
+          git fetch upstream
+          git merge --ff-only upstream/${{ parameters.upstream_branch }} # into our main branch.            
+          git push https://schandra13:$PASSKEY@github.com/schandra13/openjdk-jdk.git 
+        env:
+          PASSKEY: $(passkey)
+        displayName: "Sync fork with the upstream"    
+
