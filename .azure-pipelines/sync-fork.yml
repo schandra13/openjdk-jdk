@@ -43,7 +43,7 @@ stages:
           echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
           fork_repo_url = ${{ parameters.fork_repo_url }}
           #repourl="https://github.com/microsoft/openjdk-jdk.git"
-          repourl="${fork_repo_url#https://github.com/microsoft/}"
+          repourl="${fork_repo_url#https://github.com/shcandra13/}"
           repoName="${repourl%.git}"
           echo "reponame is : $repoName "
           echo "##vso[task.setvariable variable=FORK_FOLDER]$repoName"
