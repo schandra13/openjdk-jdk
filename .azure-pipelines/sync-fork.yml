@@ -31,34 +31,14 @@ stages:
     pool:
       name: JEG-ubuntu20.04-x64-EO
     
-    steps:
-      # - bash: |
-      #     # git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
-      #     git config --global core.autocrlf input
-      #     # git config --global user.email "javaplatinfra@microsoft.com"
-      #     # git config --global user.name "JEG- $(Build.DefinitionName)"
-      #   displayName: "git config"
-
+    steps:    
       - bash: |
-          echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
           fork_repo_url=${{ parameters.fork_repo_url }}
-          #repourl="https://github.com/microsoft/openjdk-jdk.git"
           repourl="${fork_repo_url#https://github.com/schandra13/}"
-
-          repoName="${repourl%.git}"
-          echo "reponame is : $repoName"
-          echo "##vso[task.setvariable variable=FORK_FOLDER]$repoName"
-        displayName: "Fetch fork repo folder name" 
-
-      # - bash: |
-      #     echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
-      #     repourl="https://github.com/microsoft/openjdk-jdk.git"
-      #      https://github.com/schandra13/openjdk-jdk 
-      #     repourl="${repourl#https://github.com/microsoft/}"
-      #     repourl="${repourl%.git}"
-      #     echo "repourl is : $repourl "
-      #     echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
-      #   displayName: "Fetch fork repo  folder name " 
+          # repoName="${repourl%.git}"
+          echo "reponame is : $repourl"
+          echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
+        displayName: "Fetch fork repo folder name"
 
       - bash: |
           git clone ${{ parameters.fork_repo_url }}
