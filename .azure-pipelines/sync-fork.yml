@@ -30,6 +30,7 @@ stages:
 
     pool:
       name: JEG-ubuntu20.04-x64-EO
+    
     steps:
       # - bash: |
       #     git config --global --add http.https://dev.azure.com.extraheader "AUTHORIZATION: bearer $(System.AccessToken)"
@@ -40,6 +41,7 @@ stages:
 
       - bash: |
           echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
+          fork_repo_url = ${{ parameters.fork_repo_url }}
           #repourl="https://github.com/microsoft/openjdk-jdk.git"
           repourl="${fork_repo_url#https://github.com/microsoft/}"
           repoName="${repourl%.git}"
