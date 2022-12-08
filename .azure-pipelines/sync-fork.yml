@@ -48,7 +48,7 @@ stages:
           git remote add upstream ${{ parameters.upstream_repo_url }}
           git fetch upstream
           git merge --ff-only upstream/${{ parameters.upstream_branch }} 
-          git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER).git 
+          git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
           PASSKEY: $(passkey)
         displayName: "Sync fork with the upstream"    
