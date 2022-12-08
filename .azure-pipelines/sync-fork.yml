@@ -41,7 +41,7 @@ stages:
 
       - bash: |
           echo "fork_repo_url  : ${{ parameters.fork_repo_url }} "
-          fork_repo_url = ${{ parameters.fork_repo_url }}
+          fork_repo_url=${{ parameters.fork_repo_url }}
           #repourl="https://github.com/microsoft/openjdk-jdk.git"
           repourl="${fork_repo_url#https://github.com/schandra13/}"
 
@@ -68,7 +68,7 @@ stages:
           git remote add upstream ${{ parameters.upstream_repo_url }}
           git fetch upstream
           git merge --ff-only upstream/${{ parameters.upstream_branch }} 
-          git push https://schandra13:$PASSKEY@github.com/schandra13/openjdk-jdk.git 
+          git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER).git 
         env:
           PASSKEY: $(passkey)
         displayName: "Sync fork with the upstream"    
