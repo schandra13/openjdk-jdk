@@ -55,8 +55,12 @@ stages:
         displayName: "Add upstream repository URL"
 
       - bash: |
-          cd $(FORK_FOLDER)
+          # cd $(FORK_FOLDER)
           git fetch upstream
+        displayName: "Fetch upstream"
+
+      - bash: |
+          cd $(FORK_FOLDER)
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
