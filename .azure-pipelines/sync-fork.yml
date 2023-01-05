@@ -71,9 +71,7 @@ stages:
         displayName: "Add upstream repository URL"
 
       - bash: |
-          echo "FETCHING"
           git fetch upstream
-          echo "FETCHED UPSTREAM"
         displayName: "Fetch upstream"
 
       - bash: |
