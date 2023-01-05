@@ -48,13 +48,14 @@ stages:
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
           git checkout $(FORK_BRANCH)
-          pwd
         displayName: "Change directory to fork folder and checkout fork branch"
 
-      - bash: |
-          pwd
-          cd $(FORK_FOLDER)
+      - bash: |          
           git remote add upstream $(UPSTREAM_REPO_URL)
+        displayName: "Add upstream repository URL"
+
+      - bash: |
+          cd $(FORK_FOLDER)
           git fetch upstream
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
