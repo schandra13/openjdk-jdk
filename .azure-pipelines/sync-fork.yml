@@ -1,7 +1,7 @@
 #sync-fork.yml
 # To sync fork with the upstream repo and this is done on a schedule at 10 pm PST daily.To manually do the sync we follow the below steps 
 # and the same has been incorporated in a pipeline to make it automated.
-#Input params: we provide the fork repo url and the upstream repo url and their branches to be synced
+#Input params: we provide the fork repo url and the upstream repo url defined at pipeline definition and their branches to be synced
 # 1. git clone github.com/microsoft/x
 # 2.cd x
 # 3.git checkout main (our main branch)
@@ -48,18 +48,15 @@ stages:
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
           git checkout $(FORK_BRANCH)
-        displayName: "Change directory to fork folder and checkout fork branch"
-
-      - bash: |          
-          git remote add upstream $(UPSTREAM_REPO_URL)
-        displayName: "Add upstream repository URL"
+        displayName: "Change directory to fork folder and checkout fork branch"     
 
       - bash: |
           cd $(FORK_FOLDER)
+          git remote add upstream $(UPSTREAM_REPO_URL)
           git fetch upstream
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
         displayName: "Fetch upstream and merge fast forward only"
-        
+
       - bash: |
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
