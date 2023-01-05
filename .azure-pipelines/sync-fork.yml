@@ -62,7 +62,7 @@ stages:
           cd openjdk-jdk
         displayName: Change directory to fork folder 
       - bash: |
-          git checkout $(FORK_BRANCH)
+          git checkout main
         displayName:  Checkout fork branch
       - bash: |
           git remote add upstream $(UPSTREAM_REPO_URL)
