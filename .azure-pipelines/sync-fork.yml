@@ -60,7 +60,7 @@ stages:
 
       - bash: |
           echo "Fork_Folder is : $(FORK_FOLDER)"
-          cd FORK_FOLDER
+          cd openjdk-jdk
           git checkout $(FORK_BRANCH)
         displayName: Change directory to fork folder and checkout fork branch
       
