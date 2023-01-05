@@ -48,6 +48,11 @@ stages:
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
           git checkout $(FORK_BRANCH)
+        displayName: "Change directory to fork folder and checkout fork branch"
+
+      - bash: |
+          pwd
+          ls
           git remote add upstream $(UPSTREAM_REPO_URL)
           git fetch upstream
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
