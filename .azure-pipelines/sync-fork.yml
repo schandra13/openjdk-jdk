@@ -41,7 +41,7 @@ stages:
           # git config --global user.email "javaplatinfra@microsoft.com"
           # git config --global user.name "JEG- $(Build.DefinitionName)"
         displayName: "git config" 
-        
+
       - bash: |
           fork_repo_url=$(FORK_REPO_URL)
           repourl="${fork_repo_url#https://github.com/schandra13/}"
@@ -61,12 +61,14 @@ stages:
 
       - bash: |
           cd $(FORK_FOLDER)
-          git remote add upstream $(UPSTREAM_REPO_URL)
+          git remote add upstream $(UPSTREAM_REPO_URL)          
           git fetch upstream
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
         displayName: "Fetch upstream and merge fast forward only"
 
       - bash: |
+          cd $(FORK_FOLDER)
+          git checkout $(FORK_BRANCH)
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
           PASSKEY: $(passkey) # see header comment for details on $PASSKEY.
