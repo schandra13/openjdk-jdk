@@ -35,6 +35,7 @@ schedules:
     branches:
       include:
         - "*"
+        
 stages:
 - stage: sync
   displayName: "Mirror upstream repo"
@@ -45,8 +46,7 @@ stages:
     pool:
       name: JEG-ubuntu20.04-x64-EO
     
-    steps:    
-      
+    steps:      
       - bash: |
           # ${parameter/#pattern/string} If pattern is preceded by ‘#’ (the third form above), 
           # it must match at the beginning of the expanded value of parameter
@@ -58,22 +58,28 @@ stages:
   
       - bash: |
           git clone $(FORK_REPO_URL)
-        displayName: Clone fork repository
+        displayName: "Clone fork repository"
 
       - bash: |
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
           git checkout $(FORK_BRANCH)
-        displayName: Change directory to fork folder and checkout fork branch      
+        displayName: "Change directory to fork folder and checkout fork branch"    
+      
       - bash: |
           git remote add upstream $(UPSTREAM_REPO_URL)
-        displayName: Add upstream repository URL
+        displayName: "Add upstream repository URL"
+
       - bash: |
           echo "FETCHING"
           git fetch upstream
           echo "FETCHED UPSTREAM"
+        displayName: "Fetch upstream"
+
+      - bash: |
           git merge --ff-only upstream/main --allow-unrelated-histories
-        displayName: Fetch upstream and merge fast forward only 
+        displayName: "Merge fast forward only"
+
       - bash: |
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
