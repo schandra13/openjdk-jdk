@@ -77,7 +77,7 @@ stages:
         displayName: "Fetch upstream"
 
       - bash: |
-          git merge --ff-only upstream/main
+          git merge --ff-only upstream/$(UPSTREAM_BRANCH)
         displayName: "Merge fast forward only"
 
       - bash: |
