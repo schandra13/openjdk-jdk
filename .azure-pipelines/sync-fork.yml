@@ -48,6 +48,8 @@ stages:
     steps:    
       
       - bash: |
+          # ${parameter/#pattern/string} If pattern is preceded by ‘#’ (the third form above), 
+          # it must match at the beginning of the expanded value of parameter
           fork_repo_url=$(FORK_REPO_URL)
           repourl="${fork_repo_url#https://github.com/schandra13/}"
           echo "reponame is : $repourl"
@@ -68,7 +70,7 @@ stages:
         displayName: Add upstream repository URL
       - bash: |
           git fetch upstream
-          git merge --ff-only upstream/main
+          git merge --ff-only upstream/main --allow-unrelated-histories
         displayName: Fetch upstream and merge fast forward only 
       - bash: |
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
