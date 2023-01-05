@@ -42,6 +42,9 @@ stages:
   
       - bash: |
           git clone $(FORK_REPO_URL)
+        displayName: "Clone fork repository"
+      
+      - bash: |
           echo "Fork_Folder is : $(FORK_FOLDER)"
           cd $(FORK_FOLDER)
           git checkout $(FORK_BRANCH)
