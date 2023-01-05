@@ -47,22 +47,23 @@ stages:
     
     steps:    
       
-      # - bash: |
-      #     fork_repo_url=$(FORK_REPO_URL)
-      #     repourl="${fork_repo_url#https://github.com/schandra13/}"
-      #     echo "reponame is : $repourl"
-      #     echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
-      #   displayName: "Fetch fork repo folder name"
+      - bash: |
+          # fork_repo_url=$(FORK_REPO_URL)
+          repourl="${$(FORK_REPO_URL)#https://github.com/schandra13/}"
+          echo "reponame is : $repourl"
+          echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
+        displayName: "Fetch fork repo folder name"
   
       - bash: |
           git clone $(FORK_REPO_URL)
         displayName: Clone fork repository
+
       - bash: |
           echo "Fork_Folder is : $(FORK_FOLDER)"
-          cd openjdk-jdk
+          cd FORK_FOLDER
         displayName: Change directory to fork folder 
       - bash: |
-          git checkout main
+          git checkout $(FORK_BRANCH)
         displayName:  Checkout fork branch
       - bash: |
           git remote add upstream $(UPSTREAM_REPO_URL)
