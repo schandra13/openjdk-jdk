@@ -63,8 +63,11 @@ stages:
           cd $(FORK_FOLDER)
           git remote add upstream $(UPSTREAM_REPO_URL)          
           git fetch upstream
+        displayName: "Fetch upstream"
+
+      - bash: |
           git merge --no-ff upstream/$(UPSTREAM_BRANCH)
-        displayName: "Fetch upstream and merge fast forward only"
+        displayName: "Merge fast forward only"
 
       - bash: |
           cd $(FORK_FOLDER)
