@@ -46,6 +46,9 @@ stages:
           git checkout ${{ parameters.fork_branch }} 
           git remote add upstream ${{ parameters.upstream_repo_url }}
           git fetch upstream
+        displayName: "Checkout and fetch upstream"
+
+      - bash: |
           git merge --ff-only upstream/${{ parameters.upstream_branch }} 
           git push https://schandra13:$PASSKEY@github.com/schandra13/$(FORK_FOLDER)
         env:
