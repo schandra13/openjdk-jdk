@@ -44,7 +44,7 @@ stages:
 
       - bash: |
           fork_repo_url=$(FORK_REPO_URL)
-          repourl="${fork_repo_url#https://github.com/schandra13/}"
+          repourl="${fork_repo_url#$(PATTERN_URL)}"
           echo "reponame is : $repourl"
           echo "##vso[task.setvariable variable=FORK_FOLDER]$repourl"
         displayName: "Fetch fork repo folder name"
